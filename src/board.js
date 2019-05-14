@@ -1,4 +1,5 @@
 const Piece = require('./piece');
+const Rook = require('./rook');
 
 class Board {
   constructor() {
@@ -19,7 +20,11 @@ class Board {
       }
 
       for (let j = 0; j < 8; j++) {
-        row.push(new Piece(color, [i,j]));
+        if (j === 0 || j === 7) {
+          row.push(new Rook(color,[i,j],this));
+        } else {
+          row.push(new Piece(color, [i,j], this));
+        }
       }
       grid.push(row);
     }

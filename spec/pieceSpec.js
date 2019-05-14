@@ -1,6 +1,8 @@
 describe("Piece", () => {
   const Piece = require('../src/piece');
-  const piece = new Piece('b', [1,1]);
+  const Board = require('../src/board');
+  const board = new Board();
+  const piece = board.grid[1][1];
 
   describe("constructor", () => {
     it('has a color', () => {
@@ -9,6 +11,10 @@ describe("Piece", () => {
 
     it('has a position', () => {
       expect(piece.pos).toEqual([1,1]);
+    });
+
+    it('has a reference to the board', () => {
+      expect(piece.board).toEqual(board);
     });
   });
 
