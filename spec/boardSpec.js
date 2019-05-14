@@ -1,9 +1,12 @@
 describe('Board', () => {
   const Board = require('../src/board');
-  const board = new Board();
+  let board;
+
+  beforeEach(() => {
+    board = new Board();
+  });
 
   describe('constructor', () => {
-
     it('has an 8x8 grid', () => {
       expect(board.grid.length).toEqual(8);
       board.grid.forEach(row => expect(row.length).toEqual(8));
@@ -22,6 +25,11 @@ describe('Board', () => {
       expect(board.movePiece([1,0],[3,0])).toEqual(true);
       expect(board.grid[3][0].color).toEqual('b');
     });
+
+    it('updates the position of the moved piece', () => {
+      board.movePiece([1,0],[3,0]);
+      expect(board.grid[3][0].pos).toEqual([3,0]);
+    })
 
     it('returns false when trying to move off the board', () => {
       expect(board.movePiece([1,0],[8,0])).toEqual(false);

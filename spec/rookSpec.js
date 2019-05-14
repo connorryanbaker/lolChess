@@ -39,7 +39,6 @@ describe("Rook", () => {
     it('has 10 moves from d4 as a black rook', () => {
       board.grid[4][3] = new Rook('b',[4,3],board);
       const arr = board.grid[4][3].moves();
-      console.log(arr);
       expect(arr.length).toEqual(11);
     });
   });

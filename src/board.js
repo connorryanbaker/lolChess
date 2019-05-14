@@ -1,5 +1,6 @@
 const Piece = require('./piece');
 const Rook = require('./rook');
+const Bishop = require('./bishop');
 
 class Board {
   constructor() {
@@ -9,24 +10,23 @@ class Board {
   setupBoard() {
     const grid = [];
     for (let i = 0; i < 8; i++) {
-      let row = [];
-      let color;
-      if (i < 2) {
-        color = 'b';
-      } else if (i > 5) {
-        color = 'w';
-      } else {
-        color = undefined;
+      switch(i) {
+        case 0:
+          grid.push(this.backRow('b'));
+          break;
+        case 1:
+          grid.push(this.pawnRow('b'));
+          break;
+        case 6:
+          grid.push(this.pawnRow('w'));
+          break;
+        case 7:
+          grid.push(this.backRow('w'));
+          break;
+        default:
+          grid.push(this.nullRow());
+          break;
       }
-
-      for (let j = 0; j < 8; j++) {
-        if (j === 0 || j === 7) {
-          row.push(new Rook(color,[i,j],this));
-        } else {
-          row.push(new Piece(color, [i,j], this));
-        }
-      }
-      grid.push(row);
     }
     return grid;
   }
@@ -60,6 +60,30 @@ class Board {
 
   validPos(pos) {
     return (pos[0] >= 0 && pos[0] < 8) && (pos[1] >= 0 && pos[1] < 8);
+  }
+
+  backRow(color) {
+    const ri = color === 'b' ? 0 : 7;
+    return [new Rook(color, [ri, 0], this), new Piece(color), new Bishop(color, [ri, 2], this),
+            new Piece(color), new Piece(color), new Bishop(color,[ri,5], this), 
+            new Piece(color), new Rook(color,[ri,7],this)];
+  }
+
+  pawnRow(color) {
+    const row = [];
+    const ri = color === 'b' ? 1 : 6;
+    for (let i = 0; i < 8; i++) {
+      row.push(new Piece(color, [ri,i], this));
+    }
+    return row;
+  }
+
+  nullRow() {
+    const row = [];
+    for (let i = 0; i < 8; i++) {
+      row.push(new Piece(undefined));
+    }
+    return row;
   }
 }
 
