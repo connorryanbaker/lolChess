@@ -2,6 +2,7 @@ const Piece = require('./piece');
 const Rook = require('./rook');
 const Bishop = require('./bishop');
 const Queen = require('./queen');
+const Knight = require('./knight');
 
 class Board {
   constructor() {
@@ -65,9 +66,9 @@ class Board {
 
   backRow(color) {
     const ri = color === 'b' ? 0 : 7;
-    return [new Rook(color, [ri, 0], this), new Piece(color), new Bishop(color, [ri, 2], this),
+    return [new Rook(color, [ri, 0], this), new Knight(color, [ri, 1], this), new Bishop(color, [ri, 2], this),
             new Queen(color, [ri, 3], this), new Piece(color), new Bishop(color,[ri,5], this), 
-            new Piece(color), new Rook(color,[ri,7],this)];
+            new Knight(color,[ri,6],this), new Rook(color,[ri,7],this)];
   }
 
   pawnRow(color) {
