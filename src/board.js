@@ -4,6 +4,7 @@ const Bishop = require('./bishop');
 const Queen = require('./queen');
 const Knight = require('./knight');
 const King = require('./king');
+const Pawn = require('./pawn');
 
 class Board {
   constructor() {
@@ -76,7 +77,7 @@ class Board {
     const row = [];
     const ri = color === 'b' ? 1 : 6;
     for (let i = 0; i < 8; i++) {
-      row.push(new Piece(color, [ri,i], this));
+      row.push(new Pawn(color, [ri,i], this));
     }
     return row;
   }
