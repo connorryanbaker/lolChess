@@ -44,9 +44,7 @@ class Board {
   }
 
   movePiece(from,to) {
-    if (!this.validPos(from) || !this.validPos(to)) return false;
-    if (this.pieceAt(from).color === this.pieceAt(to).color) return false;
-    if (!this.pieceAt(from).color) return false;
+    if (!this.validMove(from,to)) return false;
 
     const [toRow, toCol] = to;
     const [fromRow, fromCol] = from;
@@ -57,9 +55,45 @@ class Board {
     return true;
   }
 
+  validMove(from,to) {
+    if (!this.validPos(from) || !this.validPos(to)) return false;
+    if (this.pieceAt(from).color === this.pieceAt(to).color) return false;
+    if (!this.pieceAt(from).color) return false;
+
+    const piece = this.grid[from[0]][from[1]];
+    return this.posIncluded(piece.moves(), to);
+  } 
+
+  inCheck(color) {
+    const enemyColor = color === 'w' ? 'b' : 'w';
+    const enemyPieces = this.pieces(enemyColor);
+    const kp = this.kingPos(color);
+    let moves = [];
+    enemyPieces.forEach(p => {
+      moves = moves.concat(p.moves());
+    });
+    return this.posIncluded(moves,kp);
+  }
+
+  posIncluded(arr,pos) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i][0] === pos[0] && arr[i][1] === pos[1]) return true;
+    }
+    return false;
+  }
+
+  kingPos(color) {
+    const king = this.flat().filter(el => el.color === color && el.symbol === 'k')[0];
+    return king.pos;
+  }
+
   pieceAt(pos) {
     let [row, col] = pos;
     return this.grid[row][col];
+  }
+
+  pieces(color) {
+    return this.flat().filter(el => el.color === color);
   }
 
   validPos(pos) {

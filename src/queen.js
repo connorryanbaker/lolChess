@@ -4,6 +4,7 @@ const slideable = require('./slideable');
 class Queen extends Piece {
   constructor(color,pos,board) {
     super(color, pos, board);
+    this.symbol = 'q';
   }
 
   moves() {

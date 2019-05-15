@@ -3,6 +3,7 @@ const Piece = require('./piece');
 class Pawn extends Piece {
   constructor(color,pos,board) {
     super(color,pos,board);
+    this.symbol = 'p';
   }
 
   moves() {

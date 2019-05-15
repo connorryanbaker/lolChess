@@ -4,6 +4,7 @@ const stepable = require('./stepable');
 class Knight extends Piece {
   constructor(color,pos,board) {
     super(color,pos,board);
+    this.symbol = 'n';
   }
 
   deltas() {
