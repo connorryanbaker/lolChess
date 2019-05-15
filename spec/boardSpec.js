@@ -84,7 +84,21 @@ describe('Board', () => {
       board.movePiece([1,5],[3,5]);
       board.movePiece([6,4],[4,4]);
       board.movePiece([7,3],[3,7]);
+      board.render();
       expect(board.inCheck('b')).toBe(true);
+    });
+  });
+
+  describe('dup', () => {
+    it('returns a new Board', () => {
+      expect(board.dup() instanceof Board).toBe(true);
+    });
+
+    it('does not modify og board when moves are made', () => {
+      let dup = board.dup();
+      dup.movePiece([1,0],[3,0]);
+      dup.render();
+      expect(board.grid[3][0].color).toBe(undefined);
     });
   });
 });

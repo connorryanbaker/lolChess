@@ -123,6 +123,45 @@ class Board {
     }
     return row;
   }
+
+  dup() {
+    let dup = new Board();
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        const piece = this.grid[i][j];
+        const newPiece = this.dupPiece(piece.color,piece.symbol,dup,[i,j]);
+        dup.grid[i][j] = newPiece;
+      }
+    }
+    return dup;
+  }
+
+  dupPiece(color,symbol,board,pos) {
+    switch(symbol) {
+      case 'k':
+        return new King(color,pos,board);
+      case 'q':
+        return new Queen(color,pos,board);
+      case 'r':
+        return new Rook(color,pos,board);
+      case 'n':
+        return new Knight(color,pos,board);
+      case 'b':
+        return new Bishop(color,pos,board);
+      case 'p':
+        return new Pawn(color,pos,board);
+      default:
+        return new Piece(undefined); 
+    }
+  }
+
+  render() {
+    console.log("");
+    this.grid.forEach(row => {
+      let str = row.map(e => e.symbol).join(" ");
+      console.log(str);
+    });
+  }
 }
 
 module.exports = Board;

@@ -3,6 +3,7 @@ class Piece {
     this.color = color;
     this.pos = pos;
     this.board = board;
+    this.symbol = ' ';
   }
 
   isNull() {
