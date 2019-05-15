@@ -54,15 +54,32 @@ class Board {
     this.pieceAt(to).pos = to;
     return true;
   }
-
+  
   validMove(from,to) {
     if (!this.validPos(from) || !this.validPos(to)) return false;
     if (this.pieceAt(from).color === this.pieceAt(to).color) return false;
     if (!this.pieceAt(from).color) return false;
 
     const piece = this.grid[from[0]][from[1]];
+
     return this.posIncluded(piece.moves(), to);
   } 
+
+  movesIntoCheck(from,to) {
+    const dup = this.dup();
+    const color = this.grid[from[0]][from[1]].color;
+    dup.dangerousMovePiece(from,to);
+    return dup.inCheck(color);
+  }
+
+  dangerousMovePiece(from,to) {
+    const [toRow, toCol] = to;
+    const [fromRow, fromCol] = from;
+
+    this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
+    this.grid[fromRow][fromCol] = new Piece(undefined);
+    this.pieceAt(to).pos = to;
+  }
 
   inCheck(color) {
     const enemyColor = color === 'w' ? 'b' : 'w';
