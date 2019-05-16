@@ -9,6 +9,7 @@ const Pawn = require('./pawn');
 class Board {
   constructor() {
     this.grid = this.setupBoard();
+    this.players = ['w','b'];
   }
 
   setupBoard() {
@@ -52,14 +53,15 @@ class Board {
     this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
     this.grid[fromRow][fromCol] = new Piece(undefined);
     this.pieceAt(to).pos = to;
+    this.players.push(this.players.shift());
     return true;
   }
   
   validMove(from,to) {
     if (!this.validPos(from) || !this.validPos(to)) return false;
-    if (this.pieceAt(from).color === this.pieceAt(to).color) return false;
-    if (!this.pieceAt(from).color) return false;
-    const piece = this.grid[from[0]][from[1]];
+    let piece = this.pieceAt(from);
+    if (piece.color === this.pieceAt(to).color) return false;
+    if (!piece.color) return false;
 
     return this.posIncluded(piece.moves(), to);
   } 
