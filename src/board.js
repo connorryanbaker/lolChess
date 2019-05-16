@@ -59,7 +59,6 @@ class Board {
     if (!this.validPos(from) || !this.validPos(to)) return false;
     if (this.pieceAt(from).color === this.pieceAt(to).color) return false;
     if (!this.pieceAt(from).color) return false;
-
     const piece = this.grid[from[0]][from[1]];
 
     return this.posIncluded(piece.moves(), to);
@@ -90,6 +89,10 @@ class Board {
       moves = moves.concat(p.moves());
     });
     return this.posIncluded(moves,kp);
+  }
+
+  checkmate(color) {
+    return this.inCheck(color) && this.validMoves(color).length === 0;
   }
 
   posIncluded(arr,pos) {
@@ -170,6 +173,19 @@ class Board {
       default:
         return new Piece(undefined); 
     }
+  }
+
+  validMoves(color) {
+    const pieces = this.pieces(color);
+    let moves = [];
+    pieces.forEach(piece => {
+      const pieceMoves = piece.moves();
+      const validPieceMoves = pieceMoves.filter(move => {
+        return !this.movesIntoCheck(piece.pos, move);
+      });
+      moves = moves.concat(validPieceMoves);
+    });
+    return moves;
   }
 
   render() {

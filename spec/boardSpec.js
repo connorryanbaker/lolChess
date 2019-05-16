@@ -84,7 +84,6 @@ describe('Board', () => {
       board.movePiece([1,5],[3,5]);
       board.movePiece([6,4],[4,4]);
       board.movePiece([7,3],[3,7]);
-      board.render();
       expect(board.inCheck('b')).toBe(true);
     });
   });
@@ -97,8 +96,50 @@ describe('Board', () => {
     it('does not modify og board when moves are made', () => {
       let dup = board.dup();
       dup.movePiece([1,0],[3,0]);
-      dup.render();
+      expect(dup.grid[3][0].color).toBe('b');
       expect(board.grid[3][0].color).toBe(undefined);
+    });
+  });
+
+  describe('movesIntoCheck',() => {
+    it('returns false for legal moves', () =>{
+      expect(board.movesIntoCheck([6,4],[4,4])).toBe(false);
+    });
+
+    it('returns true for illegal moves', () => {
+      board.movePiece([1,4],[3,4]);
+      board.movePiece([0,3],[4,7]);
+      expect(board.movesIntoCheck([6,5],[4,5])).toBe(true);
+    }); 
+  });
+
+  describe('validMoves', () => {
+    it('returns an array of length 20 from start position', () => {
+      let arr = board.validMoves('w');
+      expect(arr.length).toEqual(20);
+    });
+  });
+
+  describe('checkmate', () => {
+    it('returns false when not in check', () => {
+      expect(board.checkmate('w')).toBe(false);
+      expect(board.checkmate('b')).toBe(false);
+    });
+
+    it('returns false when board is in check but there are valid moves', () => {
+      board.movePiece([6,4],[4,4]);
+      board.movePiece([1,5],[3,5]);
+      board.movePiece([7,3],[3,7]);
+      expect(board.checkmate('b')).toBe(false);
+    });
+
+    it('returns true for real checkmate', () => {
+      board.movePiece([6,5],[5,5]);
+      board.movePiece([1,4],[3,4]);
+      board.movePiece([6,6],[4,6]);
+      board.movePiece([0,3],[4,7]);
+      board.render();
+      expect(board.checkmate('w')).toBe(true);
     });
   });
 });
