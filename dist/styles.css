@@ -1,0 +1,74 @@
+ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+}
+
+.square {
+  width: 25px;
+  height: 25px;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  background-size: 75% 75%;
+  background-repeat: no-repeat;
+}
+
+.dark {
+  background-color: red;
+}
+
+.light {
+  background-color: yellow;
+}
+
+.bk {
+  background-image: url("imgs/bk.png");
+}
+
+.bq {
+  background-image: url("imgs/bq.png");
+}
+
+.br {
+  background-image: url("imgs/br.png");
+}
+
+.bn {
+  background-image: url("imgs/bn.png");
+}
+
+.bb {
+  background-image: url("imgs/bb.png");
+}
+
+.bp {
+  background-image: url("imgs/bp.png");
+}
+
+.wk {
+  background-image: url("imgs/wk.png");
+}
+
+.wq {
+  background-image: url("imgs/wq.png");
+}
+
+.wr {
+  background-image: url("imgs/wr.png");
+}
+
+.wn {
+  background-image: url("imgs/wn.png");
+}
+
+.wb {
+  background-image: url("imgs/wb.png");
+}
+
+.wp {
+  background-image: url("imgs/wp.png");
+}
