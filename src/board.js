@@ -62,6 +62,7 @@ class Board {
     let piece = this.pieceAt(from);
     if (piece.color === this.pieceAt(to).color) return false;
     if (!piece.color) return false;
+    if (this.movesIntoCheck(from,to)) return false;
 
     return this.posIncluded(piece.moves(), to);
   } 

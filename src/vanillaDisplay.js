@@ -34,7 +34,6 @@ class Display {
     e.stopPropagation();
     let li = document.elementsFromPoint(e.x,e.y)[0];
     li = li.dataset.pos === undefined ? li.parentNode : li; 
-    console.log(li);
     const pos = li.dataset.pos.split(",").map(e => parseInt(e));
     this.board.movePiece(this.selected, pos);
     this.selected = undefined;
@@ -56,7 +55,7 @@ class Display {
       icon.classList.add(colorSym);
       icon.classList.add('icon');
       icon.setAttribute('draggable', true);
-      icon.addEventListener('mousedown', this.handleMouseDown.bind(this));
+      icon.addEventListener('drag', this.handleMouseDown.bind(this));
       icon.addEventListener('dragend', this.handleMouseUp.bind(this));
       li.appendChild(icon);
     }
