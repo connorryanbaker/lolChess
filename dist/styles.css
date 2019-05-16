@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+#board {
+  margin: 0 auto;
+}
+
 ul {
   list-style: none;
   display: flex;
@@ -79,4 +83,23 @@ ul {
 
 .wp {
   background-image: url("imgs/wp.png");
+}
+
+#toMove {
+  width: 50px;
+  border: 5px solid black;
+  height: 50px;
+  margin: 0 auto;
+}
+
+.whiteToMove {
+  background-color: white;
+}
+
+.blackToMove {
+  background-color: black;
+}
+
+.toMoveContainer {
+  display: flex;
 }

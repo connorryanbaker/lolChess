@@ -19,6 +19,28 @@ class Display {
     }
   }
 
+  handleMouseDown(e) {
+    e.stopPropagation();
+    const sq = e.currentTarget;
+    const pos = sq.parentNode.dataset.pos.split(",").map(e => parseInt(e));
+    console.log(pos);
+    if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
+      this.selected = pos;
+      e.currentTarget.classList.add('selected');
+    }
+  }
+
+  handleMouseUp(e) {
+    e.stopPropagation();
+    let li = document.elementsFromPoint(e.x,e.y)[0];
+    li = li.dataset.pos === undefined ? li.parentNode : li; 
+    console.log(li);
+    const pos = li.dataset.pos.split(",").map(e => parseInt(e));
+    this.board.movePiece(this.selected, pos);
+    this.selected = undefined;
+    this.render();
+  }
+
   makeSquare(i, j) {
     let piece = this.board.grid[i][j];
     let sym = piece.symbol === ' ' ? 'e' : piece.symbol;
@@ -28,10 +50,14 @@ class Display {
     li.classList.add('square');
     li.classList.add(color);
     li.dataset.pos = [i, j];
+    li.setAttribute('draggable', false);
     if (piece.color) {
       let icon = document.createElement('i');
       icon.classList.add(colorSym);
       icon.classList.add('icon');
+      icon.setAttribute('draggable', true);
+      icon.addEventListener('mousedown', this.handleMouseDown.bind(this));
+      icon.addEventListener('dragend', this.handleMouseUp.bind(this));
       li.appendChild(icon);
     }
     li.addEventListener('click', this.handleClick.bind(this));
@@ -49,6 +75,11 @@ class Display {
       }
       board.appendChild(ul);
     }
+    const toMove = document.getElementById('toMove');
+    const color = this.board.players[0] === 'w' ? 'whiteToMove' : 'blackToMove';
+    const colorToRemove = color === 'whiteToMove' ? 'blackToMove' : 'whiteToMove';
+    toMove.classList.remove(colorToRemove);
+    toMove.classList.add(color);
   }
 
   clearBoard() {
