@@ -144,7 +144,6 @@ describe('Board', () => {
       board.movePiece([1,4],[3,4]);
       board.movePiece([6,6],[4,6]);
       board.movePiece([0,3],[4,7]);
-      board.render();
       expect(board.checkmate('w')).toBe(true);
     });
   });
@@ -175,7 +174,7 @@ describe('Board', () => {
       board.grid[7][5] = new Piece(undefined);
       board.grid[7][6] = new Piece(undefined);
       board.grid[6][4] = new Piece(undefined);
-      board.dangerousMovePiece([0,3],[3,2]);
+      board.dangerousMovePiece([0,3],[3,1]);
       expect(board.canCastleKingside('w')).toBe(false);
     });
 

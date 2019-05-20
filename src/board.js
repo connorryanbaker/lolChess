@@ -150,11 +150,60 @@ class Board {
   }
 
   canCastleKingside(color) {
-
+    if (this.inCheck(color)) return false;
+    if (!this.sideClear(color,'k')) return false;
+    if (this.sideAttacked(color, 'k')) return false;
+    if (!this.castlePiecesValid(color, 'k')) return false;
+    return true;
   }
 
   canCastleQueenside(color) {
-    
+    if (this.inCheck(color)) return false;
+    if (!this.castlePiecesValid(color,'q')) return false;
+    if (!this.sideClear(color, 'q')) return false;
+    if (this.sideAttacked(color, 'q')) return false; 
+    return true;
+  }
+
+  castlePiecesValid(color,side) {
+    let rank = color === 'w' ? 7 : 0;
+    let file = side === 'k' ? 7 : 0;
+    let pieces = this.movelist.map(e => Object.keys(e));
+    for (let i = 0; i < pieces.length; i++) {
+      let pos = pieces[i].join("").split(",").map(e => parseInt(e));
+      if (this.isSamePos(pos, [rank,4]) || this.isSamePos(pos, [rank,file])) return false;
+    }
+    return true;
+  }
+
+  sideClear(color, side) {
+    let rank = color === 'w' ? 7 : 0;
+    let start = side === 'k' ? 5 : 1;
+    let end = side === 'k' ? 7 : 4;
+    for (let i = start; i < end; i++) {
+      if (this.grid[rank][i].color !== undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  sideAttacked(color, side) {
+    let rank = color === 'w' ? 7 : 0;
+    let sqs = side === 'k' ? [5,6] : [1,2,3];
+    let enemyMoves = color === 'w' ? this.moves('b') : this.moves('w');
+    for (let i = 0; i < enemyMoves.length; i++) {
+      if (enemyMoves[i][0] == rank) {
+        for (let j = 0; j < sqs.length; j++) {
+          if (this.isSamePos(enemyMoves[i],[rank,sqs[j]])) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  isSamePos(a,b) {
+    return a[0] === b[0] && a[1] === b[1];
   }
 
   dup() {
@@ -186,6 +235,16 @@ class Board {
       default:
         return new Piece(undefined); 
     }
+  }
+
+  moves(color) {
+    const pieces = this.pieces(color);
+    let moves = [];
+    pieces.forEach(piece => {
+      const pms = piece.moves();
+      moves = moves.concat(pms);
+    });
+    return moves;
   }
 
   validMoves(color) {
