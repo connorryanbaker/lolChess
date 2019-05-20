@@ -1,5 +1,6 @@
 describe('Board', () => {
   const Board = require('../src/board');
+  const Piece = require('../src/piece');
   let board;
 
   beforeEach(() => {
@@ -41,6 +42,11 @@ describe('Board', () => {
 
     it('returns false when trying to capture a piece of the same color', () => {
       expect(board.movePiece([0,0],[1,0])).toEqual(false);
+    });
+
+    it('updates the board movelist', () => {
+      board.movePiece([6,4],[4,4]);
+      expect(board.movelist).toEqual([ { [[6,4]]: [4,4] } ]);
     });
   });
 
@@ -140,6 +146,52 @@ describe('Board', () => {
       board.movePiece([0,3],[4,7]);
       board.render();
       expect(board.checkmate('w')).toBe(true);
+    });
+  });
+
+  describe('canCastleKingside', () => {
+    it('returns false with pieces in the way', () => {
+      expect(board.canCastleKingside('w')).toBe(false);
+      expect(board.canCastleKingside('b')).toBe(false);
+    });
+
+    it('returns true with no pieces in the way', () => {
+      board.grid[7][5] = new Piece(undefined);
+      board.grid[7][6] = new Piece(undefined);
+      expect(board.canCastleKingside('w')).toBe(true);
+    });
+
+    it('returns false when in check', () => {
+      board.grid[7][5] = new Piece(undefined);
+      board.grid[7][6] = new Piece(undefined);
+      board.grid[6][4] = new Piece(undefined);
+      board.grid[1][4] = new Piece(undefined);
+      board.dangerousMovePiece([0,3],[1,4]);
+      expect(board.canCastleKingside('w')).toBe(false);
+    });
+
+    it('returns false when a piece is attacking intermediary squares', () => {
+      board.grid[7][5] = new Piece(undefined);
+      board.grid[7][6] = new Piece(undefined);
+      board.grid[6][4] = new Piece(undefined);
+      board.dangerousMovePiece([0,3],[3,2]);
+      expect(board.canCastleKingside('w')).toBe(false);
+    });
+
+    it('returns false if king has previously moved', () => {
+      board.grid[7][5] = new Piece(undefined);
+      board.grid[7][6] = new Piece(undefined);
+      board.grid[6][4] = new Piece(undefined);
+      board.movePiece([7,4],[6,4]);
+      expect(board.canCastleKingside('w')).toBe(false);
+    });
+
+    it('returns false if kings rook has moved', () => {
+      board.grid[7][5] = new Piece(undefined);
+      board.grid[7][6] = new Piece(undefined);
+      board.grid[6][4] = new Piece(undefined);
+      board.movePiece([7,7],[7,5]);
+      expect(board.canCastleKingside('w')).toBe(false);
     });
   });
 });

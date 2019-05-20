@@ -46,10 +46,13 @@ class Display {
     let colorSym = piece.color === undefined ? sym : piece.color.concat(sym);
     let li = document.createElement('li');
     let color = (i + j) % 2 === 0 ? 'light' : 'dark';
+
     li.classList.add('square');
     li.classList.add(color);
     li.dataset.pos = [i, j];
     li.setAttribute('draggable', false);
+    li.addEventListener('click', this.handleClick.bind(this));
+
     if (piece.color) {
       let icon = document.createElement('i');
       icon.classList.add(colorSym);
@@ -59,7 +62,8 @@ class Display {
       icon.addEventListener('dragend', this.handleMouseUp.bind(this));
       li.appendChild(icon);
     }
-    li.addEventListener('click', this.handleClick.bind(this));
+
+    
     return li;
   }
 

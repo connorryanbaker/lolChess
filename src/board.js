@@ -10,6 +10,7 @@ class Board {
   constructor() {
     this.grid = this.setupBoard();
     this.players = ['w','b'];
+    this.movelist = [];
   }
 
   setupBoard() {
@@ -54,6 +55,7 @@ class Board {
     this.grid[fromRow][fromCol] = new Piece(undefined);
     this.pieceAt(to).pos = to;
     this.players.push(this.players.shift());
+    this.movelist.push({[from]: to});
     return true;
   }
   
@@ -145,6 +147,10 @@ class Board {
       row.push(new Piece(undefined));
     }
     return row;
+  }
+
+  canCastleKingside(color) {
+
   }
 
   dup() {
