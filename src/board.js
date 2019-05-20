@@ -153,6 +153,10 @@ class Board {
 
   }
 
+  canCastleQueenside(color) {
+    
+  }
+
   dup() {
     let dup = new Board();
     for (let i = 0; i < 8; i++) {
