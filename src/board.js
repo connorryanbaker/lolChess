@@ -91,7 +91,11 @@ class Board {
     const kp = this.kingPos(color);
     let moves = [];
     enemyPieces.forEach(p => {
-      moves = moves.concat(p.moves());
+      if (p instanceof King) {
+        moves = moves.concat(p.movesWithoutCastling());
+      } else {
+        moves = moves.concat(p.moves());
+      }
     });
     return this.posIncluded(moves,kp);
   }

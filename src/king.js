@@ -20,14 +20,18 @@ class King extends Piece {
 
   moves() {
     let moves = stepable(this.pos,this.board,this.deltas());
-    // if (this.board.canCastleKingside(this.color)) {
-    //   let move = this.color === 'w' ? [7,6] : [0,6];
-    //   moves.push(move);
-    // } else if (this.board.canCastleQueenside(this.color)) {
-    //   let move = this.color === 'w' ? [7,2] : [0,2];
-    //   moves.push(move);
-    // }
+    if (this.board.canCastleKingside(this.color)) {
+      let move = this.color === 'w' ? [7,6] : [0,6];
+      moves.push(move);
+    } else if (this.board.canCastleQueenside(this.color)) {
+      let move = this.color === 'w' ? [7,2] : [0,2];
+      moves.push(move);
+    }
     return moves;
+  }
+
+  movesWithoutCastling() {
+    return stepable(this.pos,this.board,this.deltas());
   }
 }
 
