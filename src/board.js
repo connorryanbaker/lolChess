@@ -47,16 +47,52 @@ class Board {
 
   movePiece(from,to) {
     if (!this.validMove(from,to)) return false;
-
+    
+    if (this.pieceAt(from) instanceof King && this.isCastle(from,to)) {
+      return this.castle(from,to);
+    }
+    this.makeMove(from,to);
+    return true;
+  }
+  
+  makeMove(from,to) {
     const [toRow, toCol] = to;
     const [fromRow, fromCol] = from;
-
+  
     this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
     this.grid[fromRow][fromCol] = new Piece(undefined);
     this.pieceAt(to).pos = to;
     this.players.push(this.players.shift());
     this.movelist.push({[from]: to});
+  }
+
+  castle(from,to) {
+    let color = from[0] === 7 ? 'w' : 'b';
+    let side = from[1] - to[1] < 0 ? 'k' : 'q';
+
+    this.makeMove(from,to);
+    if (color === 'w') {
+      if (side === 'k') {
+        this.grid[7][5] = new Rook('w',[7,5],this);
+        this.grid[7][7] = new Piece(undefined);
+      } else {
+        this.grid[7][3] = new Rook('w', [7, 3], this);
+        this.grid[7][0] = new Piece(undefined);
+      }
+    } else {
+      if (side === 'k') {
+        this.grid[0][5] = new Rook('b', [0, 5], this);
+        this.grid[0][7] = new Piece(undefined);
+      } else {
+        this.grid[0][3] = new Rook('b', [0, 3], this);
+        this.grid[0][0] = new Piece(undefined);
+      }
+    }
     return true;
+  }
+
+  isCastle(from,to) {
+    return Math.abs(from[1] - to[1]) === 2;
   }
   
   validMove(from,to) {
@@ -245,8 +281,12 @@ class Board {
     const pieces = this.pieces(color);
     let moves = [];
     pieces.forEach(piece => {
-      const pms = piece.moves();
-      moves = moves.concat(pms);
+      if (piece instanceof King) {
+        moves = moves.concat(piece.movesWithoutCastling());
+      } else {
+        const pms = piece.moves();
+        moves = moves.concat(pms);
+      }
     });
     return moves;
   }

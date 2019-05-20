@@ -23,7 +23,6 @@ class Display {
     e.stopPropagation();
     const sq = e.currentTarget;
     const pos = sq.parentNode.dataset.pos.split(",").map(e => parseInt(e));
-    console.log(pos);
     if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
       this.selected = pos;
       e.currentTarget.classList.add('selected');
