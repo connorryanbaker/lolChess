@@ -64,8 +64,8 @@ class Display {
       li.appendChild(icon);
       if (piece instanceof King) {
         if (this.board.inCheck(piece.color)) {
-          li.classList.add('inCheck');
-        }
+          this.board.checkmate(piece.color) ? li.classList.add('checkmate') : li.classList.add('inCheck');
+        } 
       }
     }
 
