@@ -12,9 +12,7 @@ class ChessGame {
   }
 
   play() {
-    while (!this.gameOver()) {
-      this.display.render();
-    }
+    this.display.render();
   }
 }
 

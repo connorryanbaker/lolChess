@@ -82,6 +82,9 @@ class Display {
     const colorToRemove = color === 'whiteToMove' ? 'blackToMove' : 'whiteToMove';
     toMove.classList.remove(colorToRemove);
     toMove.classList.add(color);
+    if (this.board.checkmate('b') || this.board.checkmate('w')) {
+      console.log('checkmate');
+    }
   }
 
   clearBoard() {
