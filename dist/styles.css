@@ -103,3 +103,11 @@ ul {
 .toMoveContainer {
   display: flex;
 }
+
+.inCheck {
+  background-color: rgba(125,0,200,0.5);
+}
+
+.checkmate {
+  background-color: rgba(0,0,0,0.5);
+}

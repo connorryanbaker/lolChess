@@ -1,3 +1,5 @@
+const King = require('./king');
+
 class Display {
   constructor(board) {
     this.board = board;
@@ -60,6 +62,11 @@ class Display {
       icon.addEventListener('drag', this.handleMouseDown.bind(this));
       icon.addEventListener('dragend', this.handleMouseUp.bind(this));
       li.appendChild(icon);
+      if (piece instanceof King) {
+        if (this.board.inCheck(piece.color)) {
+          this.board.checkmate(piece.color) ? li.classList.add('checkmate') : li.classList.add('inCheck');
+        } 
+      }
     }
 
     
