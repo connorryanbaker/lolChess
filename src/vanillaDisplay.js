@@ -25,7 +25,6 @@ class Display {
     e.stopPropagation();
     const sq = e.currentTarget;
     const pos = sq.parentNode.dataset.pos.split(",").map(e => parseInt(e));
-    
     if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
       this.selected = pos;
       e.currentTarget.classList.add('selected');
@@ -48,10 +47,13 @@ class Display {
     let colorSym = piece.color === undefined ? sym : piece.color.concat(sym);
     let li = document.createElement('li');
     let color = (i + j) % 2 === 0 ? 'light' : 'dark';
+
     li.classList.add('square');
     li.classList.add(color);
     li.dataset.pos = [i, j];
     li.setAttribute('draggable', false);
+    li.addEventListener('click', this.handleClick.bind(this));
+
     if (piece.color) {
       let icon = document.createElement('i');
       icon.classList.add(colorSym);
@@ -66,7 +68,8 @@ class Display {
         }
       }
     }
-    li.addEventListener('click', this.handleClick.bind(this));
+
+    
     return li;
   }
 
