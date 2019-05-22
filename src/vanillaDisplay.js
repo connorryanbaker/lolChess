@@ -1,3 +1,5 @@
+const King = require('./king');
+
 class Display {
   constructor(board) {
     this.board = board;
@@ -23,7 +25,7 @@ class Display {
     e.stopPropagation();
     const sq = e.currentTarget;
     const pos = sq.parentNode.dataset.pos.split(",").map(e => parseInt(e));
-    console.log(pos);
+    
     if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
       this.selected = pos;
       e.currentTarget.classList.add('selected');
@@ -58,6 +60,11 @@ class Display {
       icon.addEventListener('drag', this.handleMouseDown.bind(this));
       icon.addEventListener('dragend', this.handleMouseUp.bind(this));
       li.appendChild(icon);
+      if (piece instanceof King) {
+        if (this.board.inCheck(piece.color)) {
+          li.classList.add('inCheck');
+        }
+      }
     }
     li.addEventListener('click', this.handleClick.bind(this));
     return li;
