@@ -1,21 +1,28 @@
 const King = require('./king');
 
 class Display {
-  constructor(board) {
+  constructor(board, game) {
     this.board = board;
+    this.game = game;
     this.selected = undefined;
+    this.currentMove = undefined;
   }
 
   handleClick(e) {
     const sq = e.currentTarget;
     const pos = sq.dataset.pos.split(",").map(e => parseInt(e));
     if (this.selected) {
+      this.currentMove(pos);
+      this.currentMove = undefined;
+      this.game.switchPlayers();
       this.board.movePiece(this.selected, pos);
       this.selected = undefined;
       this.render();
     } else {
       if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
         this.selected = pos;
+        this.currentMove = this.game.players[0].makeMove();
+        this.currentMove(pos);
         e.currentTarget.classList.add('selected');
       }
     }

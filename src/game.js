@@ -1,10 +1,12 @@
 const Board = require('./board');
 const Display = require('./vanillaDisplay');
+const Player = require('./player');
 
 class ChessGame {
   constructor() {
     this.board = new Board();
-    this.display = new Display(this.board);
+    this.display = new Display(this.board, this);
+    this.players = [new Player('w', this), new Player('b',this)];
   }
   
   gameOver() {
@@ -13,6 +15,14 @@ class ChessGame {
 
   play() {
     this.display.render();
+  }
+
+  switchPlayers() {
+    this.players.push(this.players.shift());
+  }
+
+  takeTurn() {
+    
   }
 }
 
