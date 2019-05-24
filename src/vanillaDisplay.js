@@ -12,17 +12,13 @@ class Display {
     const sq = e.currentTarget;
     const pos = sq.dataset.pos.split(",").map(e => parseInt(e));
     if (this.selected) {
-      this.currentMove(pos);
-      this.currentMove = undefined;
-      this.game.switchPlayers();
-      this.board.movePiece(this.selected, pos);
+      this.setDestMove(pos);
       this.selected = undefined;
       this.render();
     } else {
       if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
         this.selected = pos;
-        this.currentMove = this.game.players[0].makeMove();
-        this.currentMove(pos);
+        this.setStartMove(pos);
         e.currentTarget.classList.add('selected');
       }
     }
@@ -33,9 +29,22 @@ class Display {
     const sq = e.currentTarget;
     const pos = sq.parentNode.dataset.pos.split(",").map(e => parseInt(e));
     if (this.board.grid[pos[0]][pos[1]].color === this.board.players[0]) {
+      this.setStartMove(pos);
       this.selected = pos;
       e.currentTarget.classList.add('selected');
     }
+  }
+
+  setDestMove(pos) {
+    if (this.currentMove(pos)) {
+      this.game.switchPlayers();
+    } 
+    this.currentMove = undefined;
+  }
+
+  setStartMove(pos) {
+    this.currentMove = this.game.players[0].makeMove();
+    this.currentMove(pos);
   }
 
   handleMouseUp(e) {
